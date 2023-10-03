@@ -1,7 +1,18 @@
-import 'package:flutter/material.dart';
+import 'dart:io';
 
-class CreatePage extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:instagram_clone2/create/create_model.dart';
+
+class CreatePage extends StatefulWidget {
   const CreatePage({Key? key}) : super(key: key);
+
+  @override
+  State<CreatePage> createState() => _CreatePageState();
+}
+
+class _CreatePageState extends State<CreatePage> {
+  final model = CreateModel();
+  File? _image;
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +21,10 @@ class CreatePage extends StatelessWidget {
         title: const Text('새 게시물'),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              // 이미지 피커 실행
+
+            },
             icon: const Icon(Icons.send),
           )
         ],
@@ -32,12 +46,18 @@ class CreatePage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20,),
-              ElevatedButton(onPressed: (){}, child: const Text('이미지 선택'),
+              ElevatedButton(onPressed: ()async{
+                _image = await model.getImage();
+
+                //화면 한번 갱신(가져온 사진 아래 if 문 태워서 띄우려면 갱신)
+                setState(() {});
+
+              }, child: const Text('이미지 선택'),
               ),
-              Image.network(
-                'https://spnimage.edaily.co.kr/images/Photo/files/NP/S/2020/01/PS20012800090.jpg',
-                width: 300,
-              )
+              if(_image != null) Image.file(
+                  _image!,
+                  width: 300,
+              ),
             ],
           ),
         ),
